@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ariam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap');
+        
+        body {
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+        }
+        
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+        
+        .page.prev {
+            transform: translateX(-100%);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(2deg); }
+            66% { transform: translateY(-8px) rotate(-1deg); }
+        }
+        
+        .sparkle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnim 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkleAnim {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid;
+            animation: typing 2s steps(40) forwards, blink 1s infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        .photo-frame {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        
+        .photo-placeholder {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 4s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .memory-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .memory-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .btn-magic {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-magic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f0f9ff;
+            border-radius: 50%;
+            animation: particleFloat 6s linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0px) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .heart-beat {
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .video-frame {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .dream-dialogue {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealDialogue 1s ease-out forwards;
+        }
+
+        @keyframes revealDialogue {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mejoras responsive */
+        @media (max-width: 768px) {
+            .typewriter {
+                font-size: 2.5rem;
+            }
+            .page {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
+
+    <!-- Página 1: Portada -->
+    <div id="page1" class="page active bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-6">
+        <div class="text-center max-w-md">
+            <div class="floating mb-8">
+                <div class="text-8xl heart-beat">💫</div>
+            </div>
+            <h1 class="text-6xl font-bold text-white mb-6 typewriter" style="font-family: 'Dancing Script', cursive;">
+                Para ti, Ariam
+            </h1>
+            <p class="text-white/80 text-xl mb-8 slide-up" style="animation-delay: 2s;">
+                Hay algo que necesito decirte...
+            </p>
+            <button onclick="nextPage()" class="btn-magic slide-up" style="animation-delay: 3s;">
+                Empezar ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Página 2: Mensaje antes del sueño -->
+    <div id="page2" class="page bg-gradient-to-br from-pink-800 via-purple-800 to-indigo-900 p-6">
+        <div class="h-full flex flex-col items-center justify-center">
+            <div class="text-center mb-8">
+                <div class="text-6xl floating mb-4">💭</div>
+                <h2 class="text-4xl font-bold text-white mb-6" style="font-family: 'Playfair Display', serif;">
+                    El sueño que no me deja
+                </h2>
+            </div>
+            
+            <div class="memory-card rounded-3xl p-8 max-w-2xl">
+                <p class="text-white text-lg leading-relaxed text-center">
+                    Desde el día en que dejamos de hablar, hubo algo que no dejó de dar vueltas en mi cabeza. No eran palabras, ni escenas... era un sueño. Un mismo sueño que se repetía una y otra vez, como si quisiera recordarme algo que aún no termino de soltar.
+                </p>
+            </div>
+            
+            <button onclick="nextPage()" class="btn-magic mt-8 text-lg px-8 py-4">
+                Te cuento el sueño... 🌙✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Página 3: El Sueño -->
+    <div id="page3" class="page bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 p-6 overflow-y-auto">
+        <div class="min-h-full flex items-center justify-center">
+            <div class="max-w-2xl w-full">
+                <div class="text-center mb-8">
+                    <div class="text-6xl floating mb-4">🌙</div>
+                    <h2 class="text-4xl font-bold text-white typewriter" style="font-family: 'Dancing Script', cursive;">
+                        Tuve un sueño
+                    </h2>
+                </div>
+                
+                <div class="memory-card rounded-3xl p-8 mb-6">
+                    <p class="text-purple-200 text-lg mb-6 italic">
+                        "Tenía un psicoanalista y me preguntaba:"
+                    </p>
+                    
+                    <div id="dreamDialogue" class="space-y-4 text-white">
+                        <div class="dream-dialogue border-l-4 border-purple-400 pl-4" style="animation-delay: 0.5s;">
+                            <p class="font-semibold text-purple-300">—¿Por qué no la buscaste?</p>
+                            <p class="text-white/90">—Porque es más probable que ocurra la tercera guerra mundial a que ella me vuelva a ver con los mismos ojos —le respondí.</p>
+                        </div>
+                        
+                        <div class="dream-dialogue border-l-4 border-purple-400 pl-4" style="animation-delay: 1s;">
+                            <p class="font-semibold text-purple-300">—¿Le dijiste todo?</p>
+                            <p class="text-white/90">—Iba a bajarle las estrellas... pero cuando fui a buscarlas, la miré... y ella ya las traía en los ojos.</p>
+                        </div>
+                        
+                        <div class="dream-dialogue border-l-4 border-purple-400 pl-4" style="animation-delay: 1.5s;">
+                            <p class="font-semibold text-purple-300">—¿Y qué te pidió?</p>
+                            <p class="text-white/90">—Solo una cosa.</p>
+                        </div>
+                        
+                        <div class="dream-dialogue border-l-4 border-purple-400 pl-4" style="animation-delay: 2s;">
+                            <p class="font-semibold text-purple-300">—¿Cuál?</p>
+                            <p class="text-pink-300 font-semibold text-xl">—Me dijo: <em>"Nunca me mientas."</em></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="nextPage()" class="btn-magic w-full">
+                    Y desperté... 💫
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página 4: Video de sus ojos -->
+    <div id="page4" class="page bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-6">
+        <div class="text-center max-w-lg w-full">
+            <h2 class="text-4xl font-bold text-white mb-8" style="font-family: 'Dancing Script', cursive;">
+                Tus ojos que no olvido
+            </h2>
+            
+            <!-- Video de sus ojos -->
+            <div class="video-frame mb-8 w-80 h-60 mx-auto">
+                <video 
+                    id="eyesVideo"
+                    class="w-full h-full object-cover" 
+                    autoplay 
+                    muted 
+                    loop
+                    playsinline
+                    preload="auto"
+                    onloadeddata="handleVideoLoad(this)"
+                    oncanplay="handleVideoCanPlay(this)"
+                >
+                    <source src="video_ojos_ariam.mp4" type="video/mp4">
+                    <div class="photo-placeholder h-full flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">👁️‍🗨️</div>
+                            <span class="text-sm">Video no encontrado: video_ojos_ariam.mp4</span>
+                        </div>
+                    </div>
+                </video>
+            </div>
+            
+            <div class="memory-card rounded-2xl p-6">
+                <p class="text-white text-lg italic">
+                    "Iba a bajarte las estrellas... pero cuando fui a buscarlas, te miré... y ya las traías en los ojos."
+                </p>
+            </div>
+            
+            <button onclick="nextPage()" class="btn-magic mt-8">
+                Lo que debo decirte 💔
+            </button>
+        </div>
+    </div>
+
+    <!-- Página 5: La Disculpa -->
+    <div id="page5" class="page bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-6 overflow-y-auto">
+        <div class="min-h-full flex items-center justify-center">
+            <div class="max-w-2xl w-full">
+                <h2 class="text-4xl font-bold text-center text-white mb-8" style="font-family: 'Dancing Script', cursive;">
+                    Perdóname
+                </h2>
+                
+                <div class="memory-card rounded-3xl p-8 mb-6">
+                    <div class="text-white text-lg leading-relaxed space-y-4">
+                        <p>
+                            <span class="text-pink-300 font-semibold text-xl">Ariam,</span> no hay palabras que realmente puedan deshacer lo que hice, pero aun así necesito decirlo: <span class="text-pink-300 font-semibold">lo siento.</span>
+                        </p>
+                        
+                        <p>
+                            Cometí una estupidez, una de esas que no solo dañan a la otra persona, sino que te rompen por dentro cuando te das cuenta tarde. No hubo excusa, solo cobardía.
+                        </p>
+                        
+                        <p>
+                            No busco que me escuches con el corazón que antes tenías para mí, ni que esto cambie lo que somos ahora. Sé que crucé una línea que no se borra.
+                        </p>
+                        
+                        <p>
+                            Solo quiero que sepas que reconozco mi error con total honestidad. Te fallé en lo único que me pediste, y eso es algo que me pesará más de lo que podrías imaginar.
+                        </p>
+                        
+                        <p class="text-pink-300 font-medium">
+                            Esta disculpa no lleva detrás ningún interés, solo respeto por lo que alguna vez compartimos y por la persona increíble que fuiste para mí.
+                        </p>
+                    </div>
+                </div>
+                
+                <button onclick="nextPage()" class="btn-magic w-full">
+                    Final 🌸
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Página 6: Despedida -->
+    <div id="page6" class="page bg-gradient-to-br from-purple-900 via-pink-900 to-rose-800 flex items-center justify-center p-6">
+        <div class="text-center max-w-lg">
+            <div class="floating mb-8">
+                <div class="flex justify-center space-x-4 text-4xl">
+                    <span>🌸</span>
+                    <span>✨</span>
+                    <span>🌸</span>
+                </div>
+            </div>
+            
+            <div class="memory-card rounded-3xl p-8 mb-8">
+                <p class="text-white text-xl mb-6 leading-relaxed">
+                    Estos meses de arrepentimiento me han enseñado el valor de lo que perdí.
+                </p>
+                
+                <p class="text-white/90 text-lg mb-6">
+                    No espero que esto cambie nada. Solo necesitaba que lo supieras.
+                </p>
+                
+                <div class="border-t border-white/30 pt-6">
+                    <p class="text-pink-300 font-semibold text-lg">
+                        Con todo mi respeto y arrepentimiento sincero,
+                    </p>
+                    <p class="text-white text-2xl mt-4" style="font-family: 'Dancing Script', cursive;">
+                        — Grover
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-white/60 text-sm">
+                ✨ Fin ✨
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 6;
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                // Ocultar página actual
+                const current = document.getElementById(`page${currentPage}`);
+                current.classList.remove('active');
+                current.classList.add('prev');
+                
+                // Mostrar siguiente página
+                currentPage++;
+                const next = document.getElementById(`page${currentPage}`);
+                setTimeout(() => {
+                    next.classList.add('active');
+                    // Si llegamos a la página del video, intentar reproducirlo
+                    if (currentPage === 4) {
+                        playVideoOnPage4();
+                    }
+                }, 100);
+                
+                // Crear efectos de partículas
+                createParticles();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                // Ocultar página actual
+                const current = document.getElementById(`page${currentPage}`);
+                current.classList.remove('active');
+                
+                // Mostrar página anterior
+                currentPage--;
+                const prev = document.getElementById(`page${currentPage}`);
+                prev.classList.remove('prev');
+                setTimeout(() => {
+                    prev.classList.add('active');
+                    // Si volvemos a la página del video, intentar reproducirlo
+                    if (currentPage === 4) {
+                        playVideoOnPage4();
+                    }
+                }, 100);
+            }
+        }
+
+        // Función para manejar la reproducción del video
+        function playVideoOnPage4() {
+            const video = document.getElementById('eyesVideo');
+            if (video) {
+                // Intentar reproducir el video
+                const playPromise = video.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Video reproduce automáticamente');
+                    }).catch(error => {
+                        console.log('Error al reproducir automáticamente:', error);
+                        // Si falla la reproducción automática, mostrar controles
+                        video.setAttribute('controls', 'true');
+                    });
+                }
+            }
+        }
+
+        // Funciones para manejar eventos del video
+        function handleVideoLoad(video) {
+            console.log('Video cargado');
+            video.muted = true; // Asegurar que esté silenciado
+            if (currentPage === 4) {
+                playVideoOnPage4();
+            }
+        }
+
+        function handleVideoCanPlay(video) {
+            console.log('Video listo para reproducir');
+            if (currentPage === 4) {
+                playVideoOnPage4();
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 6000);
+                }, i * 100);
+            }
+        }
+
+        // Crear sparkles aleatorios
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.width = Math.random() * 8 + 4 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            sparkle.style.background = `hsl(${Math.random() * 60 + 200}, 100%, 80%)`;
+            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
+
+        // Crear sparkles cada segundo
+        setInterval(createSparkle, 1000);
+
+        // Control táctil para móviles
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            // Solo procesar si el deslizamiento es principalmente horizontal
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    // Deslizar hacia la izquierda (avanzar)
+                    nextPage();
+                } else {
+                    // Deslizar hacia la derecha (retroceder)
+                    prevPage();
+                }
+            }
+        });
+
+        // Control con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                prevPage();
+            }
+        });
+
+        // Pausar videos cuando no estén en la página activa
+        function pauseAllVideos() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                if (currentPage !== 4) {
+                    video.pause();
+                }
+            });
+        }
+
+        // Observer para detectar cambios de página
+        const observer = new MutationObserver(() => {
+            pauseAllVideos();
+        });
+
+        // Observar cambios en las clases de las páginas
+        document.querySelectorAll('.page').forEach(page => {
+            observer.observe(page, { attributes: true, attributeFilter: ['class'] });
+        });
+
+        // Inicializar efectos
+        createParticles();
+
+        // Asegurar que el video se reproduzca cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('eyesVideo');
+            if (video) {
+                // Configurar el video para reproducción automática
+                video.muted = true;
+                video.autoplay = true;
+                video.loop = true;
+                video.playsInline = true;
+                
+                // Intentar cargar el video
+                video.load();
+            }
+        });
+    </script>
+</body>
+</html>
